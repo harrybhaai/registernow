@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <style>
+    body { font-family: sans-serif; max-width: 360px; margin: 60px auto; padding: 0 16px; }
+    h2 { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 4px; }
+    input { width: 100%; padding: 8px; margin-bottom: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+    input.error { border-color: red; }
+    .err { color: red; font-size: 12px; display: none; margin-bottom: 10px; }
+    .err.show { display: block; }
+    button { padding: 9px 18px; background: #1a73e8; color: #fff; border: none; cursor: pointer; margin-top: 8px; }
+    .link { margin-top: 14px; font-size: 13px; }
+    .success { color: green; display: none; margin-bottom: 12px; }
+    .success.show { display: block; }
+  </style>
+</head>
+<body>
+  <div>
+    <h2>Login</h2>
+
+    <div class="success" id="success">Login successful! Redirecting...</div>
+
+    <form id="form" novalidate>
+      <div class="group">
+        <label>Email <span style="color:#ea4335">*</span></label>
+        <input type="email" id="email" placeholder="you@example.com" />
+        <div class="err" id="emailErr">Enter a valid email address.</div>
+      </div>
+
+      <div class="group">
+        <label>Password <span style="color:#ea4335">*</span></label>
+        <input type="password" id="password" placeholder="Enter your password" />
+        <div class="err" id="passErr">Password must be at least 6 characters.</div>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="link">Don't have an account? <a href="register.html">Register</a></div>
+  </div>
+
+  <script>
+    document.getElementById('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email    = document.getElementById('email');
+      const password = document.getElementById('password');
+      const emailErr = document.getElementById('emailErr');
+      const passErr  = document.getElementById('passErr');
+      let valid = true;
+
+      // Reset
+      [email, password].forEach(i => i.classList.remove('error'));
+      [emailErr, passErr].forEach(e => e.classList.remove('show'));
+      document.getElementById('success').classList.remove('show');
+
+      // Email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.value.trim())) {
+        email.classList.add('error');
+        emailErr.classList.add('show');
+        valid = false;
+      }
+
+      // Password
+      if (password.value.length < 6) {
+        password.classList.add('error');
+        passErr.classList.add('show');
+        valid = false;
+      }
+
+      if (valid) {
+        document.getElementById('success').classList.add('show');
+        this.reset();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register</title>
+  <style>
+    body { font-family: sans-serif; max-width: 360px; margin: 60px auto; padding: 0 16px; }
+    h2 { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 4px; }
+    input { width: 100%; padding: 8px; margin-bottom: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+    input.error { border-color: red; }
+    .err { color: red; font-size: 12px; display: none; margin-bottom: 10px; }
+    .err.show { display: block; }
+    button { padding: 9px 18px; background: #1a73e8; color: #fff; border: none; cursor: pointer; margin-top: 8px; }
+    .link { margin-top: 14px; font-size: 13px; }
+    .success { color: green; display: none; margin-bottom: 12px; }
+    .success.show { display: block; }
+  </style>
+</head>
+<body>
+  <div>
+    <h2>Register</h2>
+
+    <div class="success" id="success">Registration successful! You can now <a href="login.html">login</a>.</div>
+
+    <form id="form" novalidate>
+      <div class="group">
+        <label>Full Name <span style="color:#ea4335">*</span></label>
+        <input type="text" id="name" placeholder="e.g. Rahul Sharma" />
+        <div class="err" id="nameErr">Enter your full name (min 2 characters).</div>
+      </div>
+
+      <div class="group">
+        <label>Email <span style="color:#ea4335">*</span></label>
+        <input type="email" id="email" placeholder="you@example.com" />
+        <div class="err" id="emailErr">Enter a valid email address.</div>
+      </div>
+
+      <div class="group">
+        <label>Password <span style="color:#ea4335">*</span></label>
+        <input type="password" id="password" placeholder="Min 6 characters" />
+        <div class="err" id="passErr">Password must be at least 6 characters.</div>
+      </div>
+
+      <div class="group">
+        <label>Confirm Password <span style="color:#ea4335">*</span></label>
+        <input type="password" id="confirm" placeholder="Re-enter your password" />
+        <div class="err" id="confirmErr">Passwords do not match.</div>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <div class="link">Already have an account? <a href="login.html">Login</a></div>
+  </div>
+
+  <script>
+    document.getElementById('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name    = document.getElementById('name');
+      const email   = document.getElementById('email');
+      const pass    = document.getElementById('password');
+      const confirm = document.getElementById('confirm');
+      let valid = true;
+
+      // Reset
+      [name, email, pass, confirm].forEach(i => i.classList.remove('error'));
+      document.querySelectorAll('.err').forEach(e => e.classList.remove('show'));
+      document.getElementById('success').classList.remove('show');
+
+      // Name
+      if (name.value.trim().length < 2) {
+        name.classList.add('error');
+        document.getElementById('nameErr').classList.add('show');
+        valid = false;
+      }
+
+      // Email
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
+        email.classList.add('error');
+        document.getElementById('emailErr').classList.add('show');
+        valid = false;
+      }
+
+      // Password
+      if (pass.value.length < 6) {
+        pass.classList.add('error');
+        document.getElementById('passErr').classList.add('show');
+        valid = false;
+      }
+
+      // Confirm password
+      if (confirm.value !== pass.value) {
+        confirm.classList.add('error');
+        document.getElementById('confirmErr').classList.add('show');
+        valid = false;
+      }
+
+      if (valid) {
+        document.getElementById('success').classList.add('show');
+        this.reset();
+      }
+    });
+  </script>
+</body>
+</html>
